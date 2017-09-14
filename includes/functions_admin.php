@@ -16,11 +16,19 @@ function sunsetCustomSettings()
     add_settings_section('personal_informations', 'Personal informations', 'personalInformationsSettings', 'sunset_custom_settings');
 
     register_setting('sunset-custom-settings', 'first_name');
-    add_settings_field('personal_informations_first_name', 'First Name', 'personalInformationsFirstName', 'sunset_custom_settings', 'personal_informations');
+    register_setting('sunset-custom-settings', 'last_name');
+    register_setting('sunset-custom-settings', 'twitter_handler', function($input) {
+        $output = sanitize_text_field($input);
+        $output = str_replace("@", '', $output);
+        return $output;
+    });
+    register_setting('sunset-custom-settings', 'facebook_handler');
+    register_setting('sunset-custom-settings', 'gplus_handler');
 
-    register_setting('sunset-custom-settings', 'second_name');
-    add_settings_field('personal_informations_second_name', 'Second name', 'personalInformationsSecondName', 'sunset_custom_settings', 'personal_informations');
-
+    add_settings_field('personal_informations_full_name', 'Full name', 'personalInformationsFullName', 'sunset_custom_settings', 'personal_informations');
+    add_settings_field('personal_informations_twitter_handler', 'Twitter', 'personalInformationsTwitterHandler', 'sunset_custom_settings', 'personal_informations');
+    add_settings_field('personal_informations_facebook_handler', 'Facebook', 'personalInformationsFacebookHandler', 'sunset_custom_settings', 'personal_informations');
+    add_settings_field('personal_informations_gplus_handler', 'Google plus', 'personalInformationsGplusHandler', 'sunset_custom_settings', 'personal_informations');
 }
 
 function personalInformationsSettings()
@@ -28,17 +36,31 @@ function personalInformationsSettings()
     echo "Your personal informations";
 }
 
-function personalInformationsFirstName()
+function personalInformationsFullName()
 {
     $firstName = esc_attr(get_option('first_name'));
     echo "<input type='text' value='".$firstName."' name='first_name' placeholder='Your name'/>";
+    $lastName = esc_attr(get_option('last_name'));
+    echo "<input type='text' value='".$lastName."' name='last_name' placeholder='Your second name'/>";
 }
 
-
-function personalInformationsSecondName()
+function personalInformationsTwitterHandler()
 {
-    $secondName = esc_attr(get_option('second_name'));
-    echo "<input type='text' value='".$secondName."' name='second_name' placeholder='Your second name'/>";
+    $twitterHandler = esc_attr(get_option('twitter_handler'));
+    echo "<input type='text' value='".$twitterHandler."' name='twitter_handler' placeholder='Your twitter'/>";
+    echo "<p class='description'>Without @ symbol</p>";
+}
+
+function personalInformationsFacebookHandler()
+{
+    $facebookHandler = esc_attr(get_option('facebook_handler'));
+    echo "<input type='text' value='".$facebookHandler."' name='facebook_handler' placeholder='Your facebook'/>";
+}
+
+function personalInformationsGplusHandler()
+{
+    $gplusHandler = esc_attr(get_option('gplus_handler'));
+    echo "<input type='text' value='".$gplusHandler."' name='gplus_handler' placeholder='Your google plus'/>";
 }
 
 function sunsetGenerateCustomAdminPage()
