@@ -15,8 +15,10 @@ function sunsetCustomSettings()
 {
     add_settings_section('personal_informations', 'Personal informations', 'personalInformationsSettings', 'sunset_custom_settings');
 
+    register_setting('sunset-custom-settings', 'profile_avatar');
     register_setting('sunset-custom-settings', 'first_name');
     register_setting('sunset-custom-settings', 'last_name');
+    register_setting('sunset-custom-settings', 'description');
     register_setting('sunset-custom-settings', 'twitter_handler', function($input) {
         $output = sanitize_text_field($input);
         $output = str_replace("@", '', $output);
@@ -25,7 +27,9 @@ function sunsetCustomSettings()
     register_setting('sunset-custom-settings', 'facebook_handler');
     register_setting('sunset-custom-settings', 'gplus_handler');
 
+    add_settings_field('personal_informations_profile_avatar', 'Profile avatar', 'personalInformationsProfileAvatar', 'sunset_custom_settings', 'personal_informations');
     add_settings_field('personal_informations_full_name', 'Full name', 'personalInformationsFullName', 'sunset_custom_settings', 'personal_informations');
+    add_settings_field('personal_informations_description', 'Description', 'personalInformationsDescription', 'sunset_custom_settings', 'personal_informations');
     add_settings_field('personal_informations_twitter_handler', 'Twitter', 'personalInformationsTwitterHandler', 'sunset_custom_settings', 'personal_informations');
     add_settings_field('personal_informations_facebook_handler', 'Facebook', 'personalInformationsFacebookHandler', 'sunset_custom_settings', 'personal_informations');
     add_settings_field('personal_informations_gplus_handler', 'Google plus', 'personalInformationsGplusHandler', 'sunset_custom_settings', 'personal_informations');
@@ -36,12 +40,25 @@ function personalInformationsSettings()
     echo "Your personal informations";
 }
 
+function personalInformationsProfileAvatar()
+{
+    $profileAvatar = esc_attr(get_option('profile_avatar'));
+    echo "<input type='button' id='profile-avatar-button' class='button button-secondary' value='Update your avatar'/>";
+    echo "<input type='hidden' id='profile-avatar-input' value='".$profileAvatar."' name='profile_avatar'/>";
+}
+
 function personalInformationsFullName()
 {
     $firstName = esc_attr(get_option('first_name'));
     echo "<input type='text' value='".$firstName."' name='first_name' placeholder='Your name'/>";
     $lastName = esc_attr(get_option('last_name'));
     echo "<input type='text' value='".$lastName."' name='last_name' placeholder='Your second name'/>";
+}
+
+function personalInformationsDescription()
+{
+    $description = esc_attr(get_option('description'));
+    echo "<input type='text' value='".$description."' name='description' placeholder='Description'/>";
 }
 
 function personalInformationsTwitterHandler()

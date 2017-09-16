@@ -1,0 +1,28 @@
+.sunset-options-wrapper {
+    display: flex;
+}
+
+.sunset-options-wrapper * {
+    box-sizing: border-box;
+}
+
+.sunset-sidebar-preview {
+    width: 400px;
+    margin-right: 20px;
+    background: #1F1F1F;
+    text-align: center;
+    padding: 2rem;
+    color: white;
+}
+
+.sunset-sidebar-preview h1 {
+    color: white;
+}
+
+.profile-avatar {
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
+    margin: 0 auto;
+    border-radius: 100%;
+}
