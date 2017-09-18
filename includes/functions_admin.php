@@ -6,12 +6,17 @@ function sunsetCustomAdminPage()
 
     add_submenu_page('sunset_custom_settings', 'Settings', 'Settings' ,'manage_options', 'sunset_custom_settings', 'sunsetGenerateCustomAdminPage');
 
+    add_submenu_page('sunset_custom_settings', 'Theme support', 'Theme support', 'manage_options', 'sunset_theme_support', 'sunsetGenerateThemeSupportPage');
+
     add_submenu_page('sunset_custom_settings', 'Custom CSS options', 'Css options' ,'manage_options', 'sunset_custom_css', 'sunsetGenerateCssSettingsPage');
 
-    add_action('admin_init', 'sunsetCustomSettings');
+    add_action('admin_init', 'sunsetSidebarSettings');
+    add_action('admin_init', 'sunsetThemeSupportSettings');
 }
 
-function sunsetCustomSettings()
+/* SIDEBAR OPTIONS*/
+
+function sunsetSidebarSettings()
 {
     add_settings_section('personal_informations', 'Personal informations', 'personalInformationsSettings', 'sunset_custom_settings');
 
@@ -34,6 +39,7 @@ function sunsetCustomSettings()
     add_settings_field('personal_informations_facebook_handler', 'Facebook', 'personalInformationsFacebookHandler', 'sunset_custom_settings', 'personal_informations');
     add_settings_field('personal_informations_gplus_handler', 'Google plus', 'personalInformationsGplusHandler', 'sunset_custom_settings', 'personal_informations');
 }
+
 
 function personalInformationsSettings()
 {
@@ -85,8 +91,50 @@ function sunsetGenerateCustomAdminPage()
     require get_template_directory() . '/includes/templates/sunset-admin.php';
 }
 
+/* END OF THE SIDEBAR OPTIONS */
+
 function sunsetGenerateCssSettingsPage()
 {
 
 }
+
+
+/* THEME SUPPORT PAGE */
+
+function sunsetThemeSupportSettings()
+{
+    add_settings_section('theme_support', 'Theme support options', 'themeSupportSettings', 'sunset-theme-support');
+
+    register_setting('theme-options-support', 'post_formats', function($input) {
+        return $input;
+    });
+
+    add_settings_field('theme_support_post_formats', 'Post formats', 'themeSupportPostFormatsField', 'sunset-theme-support', 'theme_support');
+}
+
+function themeSupportPostFormatsField()
+{
+    $options = get_option('post_formats');
+    $formats = ['aside', 'gallery', 'link', 'image', 'quote', 'status', 'video', 'audio', 'chat'];
+    foreach($formats as $format) {
+        $isChecked = $options[$format] ? 'checked' : '';
+        echo "<p>
+            <input type='checkbox' value='1' id='{$format}' {$isChecked} name='post_formats[{$format}]'/>
+            <label for={$format}>{$format}</label>
+        </p>";
+    }
+}
+
+function themeSupportSettings()
+{
+    echo "Choose your theme options";
+}
+
+function sunsetGenerateThemeSupportPage()
+{
+    require get_template_directory() . '/includes/templates/sunset-theme-support-page.php';
+}
+
+/* END OF THEME SUPPORT */
+
 add_action('admin_menu', 'sunsetCustomAdminPage');
