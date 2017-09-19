@@ -29,4 +29,14 @@ jQuery(document).ready(function($) {
     });
     /* end of button click */
 
+    $('#profile-avatar-remove-button').on('click', function(e) {
+        e.preventDefault();
+
+        var answer = confirm("Are you sure?")
+        if(answer) {
+            $('#profile-avatar-input').val('');
+            $('#submit').trigger('click');
+        }
+    })
+
 });

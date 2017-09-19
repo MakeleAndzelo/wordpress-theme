@@ -50,6 +50,7 @@ function personalInformationsProfileAvatar()
 {
     $profileAvatar = esc_attr(get_option('profile_avatar'));
     echo "<input type='button' id='profile-avatar-button' class='button button-secondary' value='Update your avatar'/>";
+    echo "<input type='button' id='profile-avatar-remove-button' class='button button-secondary' value='Remove'/>";
     echo "<input type='hidden' id='profile-avatar-input' value='".$profileAvatar."' name='profile_avatar'/>";
 }
 
@@ -105,11 +106,27 @@ function sunsetThemeSupportSettings()
 {
     add_settings_section('theme_support', 'Theme support options', 'themeSupportSettings', 'sunset-theme-support');
 
-    register_setting('theme-options-support', 'post_formats', function($input) {
-        return $input;
-    });
+    register_setting('theme-options-support', 'post_formats');
+    register_setting('theme-options-support', 'custom_header');
+    register_setting('theme-options-support', 'custom_background');
 
     add_settings_field('theme_support_post_formats', 'Post formats', 'themeSupportPostFormatsField', 'sunset-theme-support', 'theme_support');
+    add_settings_field('theme_support_custom_header', 'Custom header', 'themeSupportCustomHeaderField', 'sunset-theme-support', 'theme_support');
+    add_settings_field('theme_support_custom_background', 'Custom background', 'themeSupportCustomBackgroundField', 'sunset-theme-support', 'theme_support');
+}
+
+function themeSupportCustomHeaderField()
+{
+    $checked = get_option('custom_header') ? 'checked' : '';
+    echo "<input type='checkbox' name='custom_header' {$checked} id='custom-header' />";
+    echo "<label for='custom-header'><small>You can add custom background in theme options</small></label>";
+}
+
+function themeSupportCustomBackgroundField()
+{
+    $checked = get_option('custom_background') ? 'checked' : '';
+    echo "<input type='checkbox' name='custom_background' {$checked} id='custom-background' />";
+    echo "<label for='custom-background'><small>You can add custom header in theme options</small></label>";
 }
 
 function themeSupportPostFormatsField()
