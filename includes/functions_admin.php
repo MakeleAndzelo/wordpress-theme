@@ -8,10 +8,13 @@ function sunsetCustomAdminPage()
 
     add_submenu_page('sunset_custom_settings', 'Theme support', 'Theme support', 'manage_options', 'sunset_theme_support', 'sunsetGenerateThemeSupportPage');
 
+    add_submenu_page('sunset_custom_settings', 'Contact', 'Contact', 'manage_options', 'sunset_theme_options_contact', 'sunsetGenerateThemeOptionsContact');
+
     add_submenu_page('sunset_custom_settings', 'Custom CSS options', 'Css options' ,'manage_options', 'sunset_custom_css', 'sunsetGenerateCssSettingsPage');
 
     add_action('admin_init', 'sunsetSidebarSettings');
     add_action('admin_init', 'sunsetThemeSupportSettings');
+    add_action('admin_init', 'sunsetThemeContactFormOptions');
 }
 
 /* SIDEBAR OPTIONS*/
@@ -153,5 +156,34 @@ function sunsetGenerateThemeSupportPage()
 }
 
 /* END OF THEME SUPPORT */
+
+/* THEME CONTACT FORM*/
+
+function sunsetThemeContactFormOptions()
+{
+    add_settings_section('sunset-contact-form-options', 'Customize contact form', 'contactFormSettings', 'sunset_theme_options_contact');
+
+    register_setting('sunset-contact-form-options-group', 'active_form');
+
+    add_settings_field('sunset_contact_form_active_form', 'Activate form', 'contactFormActivateField', 'sunset_theme_options_contact', 'sunset-contact-form-options');
+}
+
+function contactFormActivateField()
+{
+    $checked = get_option('active_form') ? 'checked' : '';
+    echo "<input type='checkbox' name='active_form' {$checked} />";
+}
+
+function contactFormSettings()
+{
+    echo "Customize contact form";
+}
+
+function sunsetGenerateThemeOptionsContact()
+{
+    require get_template_directory() . '/includes/templates/sunset-theme-contact-form.php';
+}
+
+/* END THEME CONTACT FORM*/
 
 add_action('admin_menu', 'sunsetCustomAdminPage');
