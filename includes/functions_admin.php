@@ -15,6 +15,7 @@ function sunsetCustomAdminPage()
     add_action('admin_init', 'sunsetSidebarSettings');
     add_action('admin_init', 'sunsetThemeSupportSettings');
     add_action('admin_init', 'sunsetThemeContactFormOptions');
+    add_action('admin_init', 'sunsetThemeCustomCSS');
 }
 
 /* SIDEBAR OPTIONS*/
@@ -99,7 +100,7 @@ function sunsetGenerateCustomAdminPage()
 
 function sunsetGenerateCssSettingsPage()
 {
-
+    require get_template_directory() . '/includes/templates/sunset-custom-css.php';
 }
 
 
@@ -185,5 +186,30 @@ function sunsetGenerateThemeOptionsContact()
 }
 
 /* END THEME CONTACT FORM*/
+
+/* CUSTOM CSS PAGE SETTINGS */
+
+function sunsetThemeCustomCSS()
+{
+    add_settings_section('sunset_theme_custom_css_section', 'Custom CSS section', 'sunsetThemeCustomCSSSectionCallback', 'sunset_custom_css');
+
+    register_setting('custom_css_settings', 'custom_css_script');
+
+    add_settings_field('custom_css_script_field', 'Styling code: ', 'customCssScriptFieldCallback', 'sunset_custom_css', 'sunset_theme_custom_css_section');
+}
+
+function customCssScriptFieldCallback()
+{
+    $customCssValue = esc_attr(get_option('custom_css_script'));
+    echo "<div id='custom-css'>{$customCssValue}</div>";
+    echo "<textarea id='custom-css-textarea' name='custom_css_script' style='display:none;visibility:hidden;'>{$customCssValue}</textarea>";
+}
+
+function sunsetThemeCustomCSSSectionCallback()
+{
+    echo 'Add your styling';
+}
+
+/* END OF CUSTOM CSS SETTINGS*/
 
 add_action('admin_menu', 'sunsetCustomAdminPage');
